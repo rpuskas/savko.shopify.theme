@@ -29,7 +29,11 @@
       <div class="grid-item large--one-fifth medium--two-thirds">
         <div class="product-item--price text-center">
           <p class="h1 medium-down--left">
+            {% if product.price_max != product.price_min %}
+            <small>From:</small> {% include 'price' with product.price_min %}
+            {% else %}
             {% include 'price' with product.price %}
+            {% endif %}
             {% if on_sale and settings.product_show_compare_at_price %}
               <small><s>{% include 'price' with product.compare_at_price %}</s></small>
             {% endif %}
