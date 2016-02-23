@@ -221,6 +221,10 @@
       enableHistoryState: true
     });
 
+    {% if product.available and product.options.size > 1 %}
+      Shopify.linkOptionSelectors({{ product | json }});
+    {% endif %}
+
     // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
     {% if product.options.size == 1 and product.options.first != 'Title' %}
       $('.selector-wrapper:eq(0)').prepend('<label>{{ product.options.first | escape }}</label>');
