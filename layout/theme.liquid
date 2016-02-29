@@ -86,7 +86,7 @@
 
           <div class="header-message">
             <div><b>Toll Free: </b> 1.877.885.4445</div>
-            <div><b>Free Shipping: </b></br>On orders over 100$</div>
+            <div><b>Free Shipping: </b></br>On orders over $99</div>
           </div>
 
           {% if settings.header_message != blank %}
@@ -136,10 +136,15 @@
   </nav>
 
   <div id="mobileNavBar">
-    <div class="display-table-cell">
+    <div class="display-table-cell action">
       <a class="menu-toggle mobileNavBar-link">{{ 'layout.navigation.mobile_menu' | t }}</a>
     </div>
-    <div class="display-table-cell">
+    <div class="display-table-cell logo">
+      <a href="/">
+        <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo">
+      </a>
+    </div>
+    <div class="display-table-cell action">
       <a href="/cart" class="cart-toggle mobileNavBar-link">
         <span class="icon icon-cart"></span>
         {{ 'layout.cart.cart' | t }} <span class="cart-count {% if cart.item_count == 0 %}hidden-count{% endif %}">{{ cart.item_count }}</span>
