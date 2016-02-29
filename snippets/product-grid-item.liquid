@@ -33,8 +33,6 @@
       </div>
     </div>
 
-    <p>{{ product.title }}</p>
-
     <div class="product-item--price">
       <span class="h1 medium--left">
         {% if product.price_max != product.price_min %}
@@ -56,6 +54,8 @@
         </span>
       {% endif %}
     </div>
+
+    <p>{{ product.title }}</p>
 
     {% if settings.product_reviews_enable %}
       <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>

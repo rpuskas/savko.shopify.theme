@@ -2121,24 +2121,32 @@ $shareBorderColor: #ececec;
       }
     }
   }
-}
-
-.header-logo {
-  font-weight: normal;
-  margin: $gutter/2 auto;
-  max-width: {{ settings.logo_max_width }}px;
-
-  @include at-query ($min, $large) {
-    font-size: 27px;
-  }
 
   @include at-query ($max, $medium) {
     text-align: center;
   }
+}
 
-  @include at-query ($max, $small) {
-    text-align: center;
-    font-size: 22px;
+.header-message {
+  vertical-align: middle;
+  width: 150px;
+  line-height: normal;
+  font-size: .85em;
+
+  div:first-child {
+    margin-bottom: $gutter/2;;
+  }
+}
+
+.header-logo {
+  margin: 0;
+  margin-right: $gutter/2;
+  vertical-align: middle;
+  max-height: {{ settings.logo_max_width }}px;
+  width: 175px;
+
+  @include at-query ($min, $large) {
+    font-size: 27px;
   }
 
   a,
@@ -2151,9 +2159,19 @@ $shareBorderColor: #ececec;
   a, img {
     display: block;
   }
+}
 
-  img {
-    margin: 0 auto;
+.header-logo, .header-message {
+  text-align: left;
+  display: inline-block;
+
+  @include at-query ($max, $medium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  @include at-query ($max, $small) {
+   
   }
 }
 
@@ -2303,7 +2321,6 @@ $shareBorderColor: #ececec;
   left: 0;
   right: 0;
   background-color: $colorNav;
-  border-top: 2px solid blue;
 
   a {
     color: $colorNavText;
@@ -2753,7 +2770,7 @@ a.product-grid-item,
   @include clearfix;
 
   .h1 {
-    margin-bottom: $gutter/2;
+    margin-bottom: 0;
   }
 
   span {
@@ -2762,6 +2779,7 @@ a.product-grid-item,
 
   small {
     white-space: nowrap;
+    font-size: 13px;
   }
 }
 
