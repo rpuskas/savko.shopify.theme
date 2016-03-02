@@ -30,7 +30,7 @@ Open Graph tags.
   <meta property="og:image" content="http:{{ image.src | img_url: '1024x1024' }}">
   <meta property="og:image:secure_url" content="https:{{ image.src | img_url: '1024x1024' }}">
   {% endfor %}
-  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html | escape }}">
+  <meta property="og:price:amount" content="{{ bold_price | money_without_currency | strip_html | escape }}">
   <meta property="og:price:currency" content="{{ shop.currency }}">
 {% elsif template == 'password' %}
   <meta property="og:type" content="website">

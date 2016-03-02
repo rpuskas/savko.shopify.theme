@@ -26,6 +26,7 @@
             {% if grid_results == false %}
 
               {% for item in search.results %}
+              {% include 'bold-set-prices' with item %}
                 {% include 'search-result' %}
               {% endfor %}
 
@@ -33,6 +34,7 @@
 
               <div class="grid-uniform">
                 {% for item in search.results %}
+                {% include 'bold-set-prices' with item %}
                   {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}
                   {% include 'search-result-grid' %}
                 {% endfor %}

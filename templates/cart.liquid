@@ -56,7 +56,7 @@
 
             <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
               <span class="h2">
-                {% include 'price' with item.price %}
+                {% include 'price' with bold_price %}
               </span>
             </div>
 
@@ -93,6 +93,10 @@
               {% include 'price' with cart.total_price %}
             </span>
           </div>
+
+          <!-- Bold: Quantity Breaks - Step 7 -->
+            <div id="shappify-qty-cart-msg"></div>
+          <!-- // end Bold code -->
 
           <input type="submit" name="update" class="btn-secondary update-cart" value="{{ 'cart.general.update' | t }}">
 

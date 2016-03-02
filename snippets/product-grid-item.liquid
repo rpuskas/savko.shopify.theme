@@ -7,7 +7,7 @@
 {% endunless %}
 
 {% assign on_sale = false %}
-{% if product.compare_at_price > product.price %}
+{% if bold_compare_at_price > bold_price %}
   {% assign on_sale = true %}
 {% endif %}
 
@@ -35,21 +35,21 @@
 
     <div class="product-item--price">
       <span class="h1 medium--left">
-        {% if product.price_max != product.price_min %}
-        <small>From:</small> {% include 'price' with product.price_min %}
+        {% if bold_price_max != bold_price_min %}
+        <small>From:</small> {% include 'price' with bold_price_min %}
         {% else %}
-        {% include 'price' with product.price %}
+        {% include 'price' with bold_price %}
         {% endif %}
 
         {% if on_sale and settings.product_show_compare_at_price %}
-          <small><s>{% include 'price' with product.compare_at_price %}</s></small>
+          <small><s>{% include 'price' with bold_compare_at_price %}</s></small>
         {% endif %}
       </span>
 
       {% if on_sale and settings.product_show_saved_amount %}
         <span class="sale-tag{% unless settings.product_show_compare_at_price %} medium--right{% endunless %}{% if settings.product_reviews_enable %} has-reviews{% endif %}">
-          {% assign compare_price = product.compare_at_price %}
-          {% assign product_price = product.price %}
+          {% assign compare_price = bold_compare_at_price %}
+          {% assign product_price = bold_price %}
           {% include 'price-sale' %}
         </span>
       {% endif %}

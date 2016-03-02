@@ -49,6 +49,7 @@
     <div class="grid-uniform">
 
       {% for product in collection.products %}
+      {% include 'bold-set-prices' with product %}
         
         {% if has_sidebar %}
           {% assign grid_item_width = 'large--one-quarter medium--one-third small--one-half' %}
