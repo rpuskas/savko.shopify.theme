@@ -20,22 +20,28 @@
       <div class="grid-item large--one-fifth medium--one-third">
         <img src="{{ product.featured_image.src | img_url: image_size }}" alt="{{ product.featured_image.alt | escape }}">
       </div>
-      <div class="grid-item large--three-fifths medium--two-thirds">
-        <p class="h6">{{ product.title }}</p>
-        <div class="rte">
-          <p>{{ product.content | strip_html | truncatewords: 30 }}</p>
-        </div>
+      <div class="grid-item large--two-fifths medium--two-thirds">
+        <p class="h3">{{ product.title }}</p>
+        <p>
+
+          {% assign variant_count = product.variants | size %}
+          {% if variant_count > 1 %}
+          Sizes: {{ product.variants | first | map: 'option1' }} - {{ product.variants | last | map: 'option1' }}
+          {% else %}
+          Size: {{ product.variants | first | map: 'option1' }}
+          {% endif %}
+        </p>
       </div>
-      <div class="grid-item large--one-fifth medium--two-thirds">
+      <div class="grid-item large--two-fifths medium--two-thirds">
         <div class="product-item--price text-center">
-          <p class="h1 medium-down--left">
+          <p class="medium-down--left">
             {% if product.price_max != product.price_min %}
-            <small>From:</small> {% include 'price' with product.price_min %}
+            Prices: {% include 'price' with product.price_min %} - {% include 'price' with product.price_max %}
             {% else %}
-            {% include 'price' with product.price %}
+            Price: {% include 'price' with product.price %}
             {% endif %}
             {% if on_sale and settings.product_show_compare_at_price %}
-              <small><s>{% include 'price' with product.compare_at_price %}</s></small>
+              <s>{% include 'price' with product.compare_at_price %}</s>
             {% endif %}
           </p>
 

@@ -2150,7 +2150,7 @@ $shareBorderColor: #ececec;
   line-height: normal;
   font-size: .85em;
 
-  div:first-child {
+  h3:first-child {
     margin-bottom: $gutter/2;;
   }
 }
@@ -2739,6 +2739,12 @@ $shareBorderColor: #ececec;
 .on-sale {
 
 }
+.product-list-item {
+  .product-item--price small {
+    font-size: inherit;
+  }
+}
+
 
 @include at-query ($max, $medium) {
   .product-list-item .spr-badge {
@@ -2756,6 +2762,15 @@ $shareBorderColor: #ececec;
 
     .grid-item {
       display: table-cell;
+    }
+  }
+}
+
+@include at-query ($max, $small) {
+  .product-list-item {
+    p {
+      margin: 0;
+      padding: 0;
     }
   }
 }

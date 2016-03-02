@@ -55,7 +55,7 @@
       {% endif %}
     </div>
 
-    <p>{{ product.title }}</p>
+    <p>{{ product.title | split: ',' | join: ',<br>' }}</p>
 
     {% if settings.product_reviews_enable %}
       <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>

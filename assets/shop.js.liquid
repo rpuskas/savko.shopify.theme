@@ -537,5 +537,9 @@ timber.formatSaleTag = function (val) {
   return val;
 };
 
+timber.commaDelimitedTitle = function (val) {
+  return val.replace(",","<br>")
+}
+
 // Initialize Timber's JS on docready
 $(timber.init)
