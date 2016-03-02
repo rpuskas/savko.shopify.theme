@@ -19,23 +19,23 @@
   <div class="grid-item two-thirds {% unless item.featured_image %}push--one-third{% endunless %}">
     <h2 itemprop="name">{{ item.title | link_to: item.url }}</h2>
 
-    {% if item.compare_at_price > item.price %}
+    {% if bold_compare_at_price > bold_price %}
       <li>
         <span id="productPrice" class="h1">
-          {% include 'price' with item.price %}
+          {% include 'price' with bold_price %}
         </span>
       </li>
       <li>
         <span id="comparePrice" class="sale-tag large">
-          {% assign compare_price = item.compare_at_price %}
-          {% assign product_price = item.price %}
+          {% assign compare_price = bold_compare_at_price %}
+          {% assign product_price = bold_price %}
           {% include 'price-sale' %}
         </span>
       </li>
     {% else %}
       <li>
         <span id="productPrice" class="h1">
-          {% include 'price' with item.price %}
+          {% include 'price' with bold_price %}
         </span>
       </li>
     {% endif %}

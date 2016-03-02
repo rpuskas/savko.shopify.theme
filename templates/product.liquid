@@ -1,3 +1,9 @@
+
+<!-- Bold: QB - Step 2 -->
+{% include 'shappify-qb-no-select' %}
+{% include 'bold-set-prices' with product %}
+<!-- // end Bold code -->
+
 {% include 'breadcrumb' %}
 
 <div class="grid" itemscope itemtype="http://schema.org/Product">
@@ -8,7 +14,7 @@
     <div class="grid">
       <div class="grid-item large--eleven-twelfths text-center">
         <div class="product-photo-container" id="productPhoto">
-          {% assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
+          {% assign featured_image = bold_selected_or_first_available_variant.featured_image | default: product.featured_image %}
           <img id="productPhotoImg" src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" {% if settings.product_image_zoom_enable %} data-zoom="{{ featured_image | img_url: '1024x1024' }}"{% endif %}>
         </div>
         {% if product.images.size > 1 %}
@@ -40,7 +46,7 @@
 
     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
-      {% assign variant = product.selected_or_first_available_variant %}
+      {% assign variant = bold_selected_or_first_available_variant %}
 
       <meta itemprop="priceCurrency" content="{{ shop.currency }}">
       <meta itemprop="price" content="{{ variant.price | money_without_currency }}">
@@ -51,7 +57,7 @@
             {% include 'price' with variant.price %}
           </span>
         </li>
-        {% if product.compare_at_price_max > product.price and settings.product_show_saved_amount %}
+        {% if bold_compare_at_price_max > bold_price and settings.product_show_saved_amount %}
         <li>
           <span id="comparePrice" class="sale-tag large">
             {% assign compare_price = variant.compare_at_price %}
@@ -72,11 +78,17 @@
       <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
 
       <form action="/cart/add" method="post" enctype="multipart/form-data" id="addToCartForm">
+
         <select name="id" id="productSelect" class="product-variants">
           {% for variant in product.variants %}
-            {% if variant.available %}
 
-              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+            <!-- Bold: QB - Step 3 -->
+            {% if variant.metafields.shappify_qb.qb_hide == "1" or false %}{% continue %}{% endif %}
+            <!-- // end Bold code -->
+
+            {% if variant.available and variant.metafields.shappify_qb.qb_hide != "1" %}
+
+              <option {% if variant == bold_selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
 
             {% else %}
               <option disabled="disabled">
@@ -95,6 +107,7 @@
           <span class="icon icon-cart"></span>
           <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
         </button>
+
         {% if settings.product_quantity_message %}
           <span id="variantQuantity" class="variant-quantity"></span>
         {% endif %}
@@ -107,6 +120,13 @@
     <div class="product-description rte" itemprop="description">
       {{ product.description }}
     </div>
+
+
+    {% unless qb_loaded == 'true' %}
+      <div id="shappify-qty-msg"></div>
+      {% assign qb_loaded = 'true' %}
+    {% endunless %}
+
     <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
 
     {% if settings.social_sharing_products %}
@@ -231,7 +251,7 @@
     {% endif %}
 
     // Hide selectors if we only have 1 variant and its title contains 'Default'.
-    {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+    {% if bold_variants_size == 1 and (product.variants.first.title contains '+' or 'Default') %}
       $('.selector-wrapper').hide();
     {% else %}
       $('#variantBreak').removeClass('hr--clear');

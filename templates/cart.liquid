@@ -56,7 +56,7 @@
 
             <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
               <span class="h2">
-                {% include 'price' with item.price %}
+                {% include 'price' with bold_price %}
               </span>
             </div>
 
@@ -94,7 +94,8 @@
             </span>
           </div>
 
-          <a class="keep-shopping" href="{{ cart.items.first.product.collections.first.url }}" title="Continue Shopping">Continue Shopping</a>
+          <!-- QuantityBreaks -->
+          <div id="shappify-qty-cart-msg"></div>
 
           <input type="submit" name="update" class="btn-secondary update-cart" value="{{ 'cart.general.update' | t }}">
 
