@@ -20,7 +20,7 @@
       <div class="grid-item large--one-fifth medium--one-third">
         <img src="{{ product.featured_image.src | img_url: image_size }}" alt="{{ product.featured_image.alt | escape }}">
       </div>
-      <div class="grid-item large--two-fifths medium--two-thirds">
+      <div class="grid-item large--three-fifths medium--two-thirds">
         <p class="h3">{{ product.title }}</p>
         <p>
 
@@ -32,13 +32,13 @@
           {% endif %}
         </p>
       </div>
-      <div class="grid-item large--two-fifths medium--two-thirds">
+      <div class="grid-item large--one-fifth medium--two-thirds">
         <div class="product-item--price text-center">
           <p class="medium-down--left">
             {% if product.price_max != product.price_min %}
-            Prices: {% include 'price' with product.price_min %} - {% include 'price' with product.price_max %}
+            {% include 'price' with product.price_min %} - {% include 'price' with product.price_max %}
             {% else %}
-            Price: {% include 'price' with product.price %}
+            {% include 'price' with product.price %}
             {% endif %}
             {% if on_sale and settings.product_show_compare_at_price %}
               <s>{% include 'price' with product.compare_at_price %}</s>

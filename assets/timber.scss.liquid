@@ -2753,6 +2753,15 @@ $shareBorderColor: #ececec;
 }
 
 @include at-query ($min, $large) {
+  .product-list-item .product-item--price p {
+    //essensially trying to extend h2 for large screens
+    //@extend does not work in at-query for some reason
+    font-size: 1.133em;
+    color: $colorHeaders;
+  }
+}
+
+@include at-query ($min, $large) {
   .product-list-item {
     .grid {
       display: table;
@@ -2766,11 +2775,11 @@ $shareBorderColor: #ececec;
   }
 }
 
-@include at-query ($max, $small) {
+@include at-query ($max, $medium) {
   .product-list-item {
-    p {
+    .h3, p {
       margin: 0;
-      padding: 0;
+      padding: 0 0 5px 0;
     }
   }
 }
