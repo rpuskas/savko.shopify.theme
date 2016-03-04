@@ -2106,7 +2106,6 @@ $shareBorderColor: #ececec;
   color: $headerText;
 
   .site-header--text-links a {
-    color: $headerText;
 
     &:hover {
       opacity: 0.9;
@@ -2486,6 +2485,7 @@ $shareBorderColor: #ececec;
 .site-nav--dropdown {
   display: none;
   margin: 0;
+  color: $colorNav;
 }
 
 .site-nav--dropdown .icon-arrow-down {
@@ -2518,14 +2518,14 @@ $shareBorderColor: #ececec;
     }
 
     a {
-      color: $colorPrimary;
+      color: $colorNav;
       text-transform: none;
       padding: $gutter/3 $gutter*1.5 $gutter/3 $gutter/2;
 
       &:hover,
       &:active,
       &:focus {
-        color: darken($colorPrimary, 10%);
+        color: lighten($colorNav, 10%);
       }
 
       &:focus {
@@ -2542,14 +2542,14 @@ $shareBorderColor: #ececec;
   }
 
   .site-nav--dropdown {
-    background-color: lighten($colorNav, 15%);
+    background-color: darken($colorNav, 15%);
 
     & > li {
       float: none;
       width: 100%;
       border: none;
       text-transform: none;
-      border-bottom: 1px solid lighten($colorNav, 5%);
+      border-bottom: 1px solid darken($colorNav, 5%);
     }
   }
 
@@ -2609,7 +2609,7 @@ $shareBorderColor: #ececec;
     margin: 0;
     img {
       margin: 0 auto;
-      height: 35px;
+      height: 30px;
       display: block;
 
       @include at-query ($min, $small) {
@@ -3256,11 +3256,10 @@ $innerFilterIconWidth: 6px;
     border-top: 0 none;
   }
 
-  a {
+  a:not(.keep-shopping) {
     color: $colorTextBody;
-
     &:hover {
-      color: $colorPrimary;
+      color: darken($colorTextBody, 10%);
     }
   }
 
@@ -3279,6 +3278,11 @@ $innerFilterIconWidth: 6px;
       }
     }
   }
+}
+
+.keep-shopping {
+  display: block;
+  margin: $gutter/3 0;
 }
 
 .cart-image,
@@ -4360,6 +4364,23 @@ img.mfp-img {
 .shopify-name {
   .modern & {
     @include visuallyHidden;
+  }
+}
+
+/* =========
+   Custom Pages 
+   ========= */
+.click-clamp-sizing-guide {
+  white-space: nowrap;
+  td,td {
+    padding: 5px;
+  }
+  .label {
+    font-weight: bold;
+  }
+  th {
+    background-color: $colorNav;
+    color: $colorNavText;
   }
 }
 
