@@ -9,7 +9,7 @@
     },
     "404": {
       "title": "404 Page Not Found",
-      "subtext_html": "The page you requested does not exist. Click <a href=\"\/collections\/all\">here<\/a> to continue shopping."
+      "subtext_html": "The page you requested does not exist. Click <a href=\"/collections/all\">here</a> to continue shopping."
     },
     "password_page": {
       "opening_soon": "Opening Soon",
@@ -23,7 +23,7 @@
       "signup_form_email_placeholder": "Your email",
       "signup_form_submit": "Submit",
       "signup_form_success": "We will send you an email right before we open!",
-      "admin_link_html": "Are you the store owner? <a href=\"\/admin\" class=\"text-link\">Log in here<\/a>",
+      "admin_link_html": "Are you the store owner? <a href=\"/admin\" class=\"text-link\">Log in here</a>",
       "password_link": "Enter using password",
       "powered_by_shopify_html": "This shop will be powered by {{ shopify }}",
       "close": "Close"
@@ -34,7 +34,7 @@
     },
     "forms": {
       "post_error": "Sorry, looks like something went wrong. Please correct the following and submit again:",
-      "post_field_error_html": "The <strong>{{ field }}<\/strong> {{ error }}"
+      "post_field_error_html": "The <strong>{{ field }}</strong> {{ error }}"
     },
     "search": {
       "no_results_html": "Your search for \"{{ terms }}\" did not yield any results.",
@@ -87,7 +87,7 @@
       "update": "Update cart",
       "checkout": "Checkout",
       "empty": "Your cart is currently empty.",
-      "continue_browsing_html": "Continue browsing <a href=\"\/collections\/all\">here<\/a>.",
+      "continue_browsing_html": "Continue browsing <a href=\"/collections/all\">here</a>.",
       "or": "or",
       "view_cart": "View Cart",
       "close_cart": "Close Cart"
@@ -160,7 +160,7 @@
       "city": "City",
       "country": "Country",
       "province": "Province",
-      "zip": "Postal\/Zip Code",
+      "zip": "Postal/Zip Code",
       "phone": "Phone",
       "set_default": "Set as default address?",
       "add": "Add Address",
@@ -239,7 +239,7 @@
     "featured_collections": {
       "heading": "Shop For",
       "more_categories": "More categories",
-      "no_collections_html": "You don't have any collections to show here. <a href=\"\/admin\/themes\/\">Add some featured collections<\/a> in your theme settings.",
+      "no_collections_html": "You don't have any collections to show here. <a href=\"/admin/themes/\">Add some featured collections</a> in your theme settings.",
       "collection_image": "Collection Image",
       "example_collection": "Example Collection"
     },
@@ -247,7 +247,7 @@
       "heading": "Featured Collection",
       "more": "More",
       "no_products_in_collection_html": "You have no products in your {{ collection_title }} collection.",
-      "instructions_to_add_products_to_collection_html": "This placeholder will appear until you <a href=\"{{ collection_admin_url }}\">add a product to this collection<\/a> or disable <em>Featured Row {{ featured_row_index }}<\/em> in your theme settings.",
+      "instructions_to_add_products_to_collection_html": "This placeholder will appear until you <a href=\"{{ collection_admin_url }}\">add a product to this collection</a> or disable <em>Featured Row {{ featured_row_index }}</em> in your theme settings.",
       "add_a_product": "Add a Product",
       "example_product_title": "Example Product Title",
       "more_in_collection": "More {{ collection_title }}"
@@ -312,4 +312,5 @@
       "add_to_apple_wallet": "Add to Apple Wallet"
     }
   }
+
 }

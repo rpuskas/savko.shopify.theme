@@ -9,7 +9,7 @@
     },
     "404": {
       "title": "404 Seite nicht gefunden",
-      "subtext_html": "Die von Ihnen angeforderte Seite existiert nicht. Klicken Sie <a href=\"\/collections\/all\">hier<\/a>, um den Einkauf fortzusetzen."
+      "subtext_html": "Die von Ihnen angeforderte Seite existiert nicht. Klicken Sie <a href=\"/collections/all\">hier</a>, um den Einkauf fortzusetzen."
     },
     "password_page": {
       "opening_soon": "Eröffnet demnächst",
@@ -23,7 +23,7 @@
       "signup_form_email_placeholder": "Ihre E-Mail-Adresse",
       "signup_form_submit": "Abschicken",
       "signup_form_success": "Wir senden Ihnen eine E-Mail, kurz bevor wir eröffnen!",
-      "admin_link_html": "Sind Sie der Geschäftsinhaber? <a href=\"\/admin\" class=\"text-link\">Melden Sie sich hier an<\/a>",
+      "admin_link_html": "Sind Sie der Geschäftsinhaber? <a href=\"/admin\" class=\"text-link\">Melden Sie sich hier an</a>",
       "password_link": "Mit Passwort betreten",
       "powered_by_shopify_html": "Dieser Shop wird mit Hilfe von {{ shopify }} betrieben werden",
       "close": "Schließen (Esc)"
@@ -34,7 +34,7 @@
     },
     "forms": {
       "post_error": "Tut uns leid, aber es ist ein Fehler aufgetreten. Folgendes müssten Sie bitte korrigieren und erneut übermitteln:",
-      "post_field_error_html": "<strong>{{ field }}<\/strong> {{ error }}"
+      "post_field_error_html": "<strong>{{ field }}</strong> {{ error }}"
     },
     "search": {
       "no_results_html": "Ihre Suche nach \"{{ terms }}\" hat keine Ergebnisse hervorgebracht.",
@@ -87,7 +87,7 @@
       "update": "Einkaufswagen aktualisieren",
       "checkout": "Zur Kasse",
       "empty": "Ihr Einkaufswagen ist im Moment leer.",
-      "continue_browsing_html": "Mit der Suche <a href=\"\/collections\/all\">hier<\/a> fortfahren.",
+      "continue_browsing_html": "Mit der Suche <a href=\"/collections/all\">hier</a> fortfahren.",
       "or": "oder",
       "view_cart": "Einkaufswagen ansehen",
       "close_cart": "Einkaufswagen schließen"
@@ -239,7 +239,7 @@
     "featured_collections": {
       "heading": "Suchen nach",
       "more_categories": "Weitere Kategorien",
-      "no_collections_html": "Sie haben keine Zusammenstellungen, die Sie hier anzeigen können. <a href=\"\/admin\/themes\/\">Fügen Sie ein paar ausgewählte Zusammenstellungen<\/a> in Ihren Theme-Einstellungen hinzu.",
+      "no_collections_html": "Sie haben keine Zusammenstellungen, die Sie hier anzeigen können. <a href=\"/admin/themes/\">Fügen Sie ein paar ausgewählte Zusammenstellungen</a> in Ihren Theme-Einstellungen hinzu.",
       "collection_image": "Bild der Zusammenstellung",
       "example_collection": "Beispielzusammenstellung"
     },
@@ -247,7 +247,7 @@
       "heading": "Ausgewählte Zusammenstellung",
       "more": "Mehr",
       "no_products_in_collection_html": "Sie haben keine Artikel in Ihrer {{ collection_title }}-Zusammenstellung.",
-      "instructions_to_add_products_to_collection_html": "Dieser Platzhalter verschwindet, wenn Sie <a href=\"{{ collection_admin_url }}\">dieser Zusammenstellung einen Artikel hinzufügen<\/a> oder <em>Ausgewählte Reihe {{ featured_row_index }}<\/em> in Ihren Theme-Einstellungen deaktivieren.",
+      "instructions_to_add_products_to_collection_html": "Dieser Platzhalter verschwindet, wenn Sie <a href=\"{{ collection_admin_url }}\">dieser Zusammenstellung einen Artikel hinzufügen</a> oder <em>Ausgewählte Reihe {{ featured_row_index }}</em> in Ihren Theme-Einstellungen deaktivieren.",
       "add_a_product": "Artikel hinzufügen",
       "example_product_title": "Beispielhafter Produkttitel",
       "more_in_collection": "Mehr {{ collection_title }}"
