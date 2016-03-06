@@ -20,6 +20,7 @@
     {% comment %}
       Different markup if description is set
     {% endcomment %}
+
     {% if collection.description != blank %}
       <header class="section-header">
         <h1 class="section-header--title">{{ collection.title }}</h1>
@@ -36,6 +37,7 @@
         </div>
       </div>
     {% else %}
+    
     <header class="section-header">
       <h1 class="section-header--title section-header--left">{{ collection.title }}</h1>
       <div class="section-header--right">
