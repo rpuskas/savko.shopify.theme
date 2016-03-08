@@ -48,8 +48,8 @@
     {% endif %}
 
     <div class="grid-uniform">
-
       {% for product in collection.products %}
+      {% include 'bold-set-prices' with product %}
 
         {% include 'product-list-item' %}
 
