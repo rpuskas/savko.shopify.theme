@@ -1,0 +1,526 @@
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/angucomplete-alt/1.3.0/angucomplete-alt.min.js"></script>
+<div ng-app="bulkOrderAppModule">
+<div ng-controller="BulkOrderRootCtrl" class="bo-app"><bo-line-item ng-repeat="lineItem in lineItems" line-item="lineItem" index="$index" all-line-items="lineItems"> </bo-line-item>
+<div class="bo-row">
+<div class="bo-add-line-item bo-col-12"><a ng-click="addLineItem()"> Add Line Item </a></div>
+</div>
+<div class="bo-row">
+<div class="bo-cart-controls">
+<div class="bo-cart-link bo-col-6"><a href="/cart"> Go to Cart - Total: <span ng-bind-html="cart['total_price'] | shopifyMoneyFormat"></span>  |  [[cart['item_count'] ]] Items </a></div>
+<div class="bo-clear-cart bo-col-3"><a ng-click="clearCart()"> Clear Cart </a></div>
+<div class="bo-update-cart bo-col-3"><button class="btn bo-update-cart-btn" ng-disabled="!hasChanges" ng-click="updateCart()"> Update Cart </button></div>
+</div>
+</div>
+</div>
+<script type="text/ng-template" id="line-item-template">// <![CDATA[
+<div class="bo-line-item">
+      <div class="bo-row">
+        <div class="bo-variant-input-section bo-col-8">
+          <angucomplete-alt ng-if="!lineItem.searchResult"
+            placeholder="Search for products by name or SKU"
+            pause="400"
+            selected-object="selectResult"
+            remote-url="/search?type=product&view=bulk-order-json&q="
+            remote-url-data-field="results"
+            title-field="product_title,variant_title"
+            image-field="thumbnail_url"
+            input-class="bo-variant-input"
+            bo-configure-angucomplete bo-tabindex="[[1000 + 2 * index]]">
+          </angucomplete-alt>
+          <div ng-if="lineItem.searchResult">
+            <div class="bo-col-2 bo-img-container">
+              <img class="bo-img" ng-src="[[lineItem.searchResult['thumbnail_url'] ]]"/>
+            </div>
+            <div class="bo-col-10">
+              <div class="bo-line-item-details">
+                [[lineItem.searchResult['product_title'] ]]
+                &nbsp;-&nbsp;
+                [[lineItem.searchResult['variant_title'] ]]
+                <span ng-if="lineItem.searchResult['sku']">
+                  &nbsp;-&nbsp;
+                  [[lineItem.searchResult['sku'] ]]
+                </span>
+              </div>
+              <div class="bo-line-item-price" ng-if="lineItem.searchResult['price']">
+                Unit price: <span ng-bind-html="lineItem.searchResult['price'] | shopifyMoneyFormat"></span>
+              </div>
+              <div ng-if="numVariants() > 1 && !lineItem.expanded">
+                <a href="javascript:void(0)" ng-click="expandAllVariants()">
+                  Expand all [[numVariants()]] variants
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bo-quantity-input-section bo-col-3">
+          <input type="number" placeholder="Quantity"
+            ng-model="lineItem.quantity"
+            ng-change="quantityChanged()"
+            tabindex="[[1000 + 2 * index + 1]]"/>
+        </div>
+        <div class="bo-remove-section bo-col-1">
+          <a href="javascript:void(0)" ng-click="deleteLineItem()">
+            <div class="bo-svg-container">
+              <svg viewBox="0 0 49 49" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                    <path d="M24.486,-3.55271368e-15 C10.984,-3.55271368e-15 -3.55271368e-15,10.985 -3.55271368e-15,24.486 C-3.55271368e-15,37.988 10.984,48.972 24.486,48.972 C37.988,48.972 48.972,37.988 48.972,24.486 C48.972,10.984 37.988,-3.55271368e-15 24.486,-3.55271368e-15 L24.486,-3.55271368e-15 Z M24.486,45.972 C12.638,45.972 3,36.331 3,24.485 C3,12.637 12.639,3 24.486,3 C36.334,3 45.972,12.638 45.972,24.486 C45.972,36.334 36.334,45.972 24.486,45.972 L24.486,45.972 Z M32.007,16.965 C31.42,16.379 30.471,16.379 29.885,16.965 L24.486,22.365 L19.087,16.966 C18.501,16.38 17.552,16.38 16.966,16.966 C16.381,17.551 16.38,18.502 16.966,19.088 L22.365,24.486 L16.965,29.886 C16.38,30.471 16.379,31.421 16.965,32.007 C17.55,32.593 18.501,32.592 19.086,32.007 L24.486,26.607 L29.884,32.006 C30.47,32.591 31.42,32.591 32.005,32.006 C32.592,31.419 32.591,30.47 32.005,29.884 L26.607,24.486 L32.007,19.087 C32.593,18.501 32.592,17.551 32.007,16.965 L32.007,16.965 Z" id="Shape" fill="#404040" sketch:type="MSShapeGroup"></path>
+                </g>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="bo-row" ng-if="showLineItemAlreadyExistsMsg">
+        <div class="bo-col-12 bo-line-item-already-exists-msg">
+          A line item already exists for that product
+        </div>
+      </div>
+    </div>
+// ]]></script><script>// <![CDATA[
+    var template = document.getElementById('line-item-template');
+    template.innerHTML = template.innerHTML.replace('// <![CDATA[', '').replace('// ]]>', '');
+  
+// ]]></script></div>
+<style><!--
+  .bo-app {
+    padding: 20px 0px 10px 0px;
+    border: 1px solid #EEEEEE;
+  }
+
+  .bo-variant-input-section {
+    display: inline-block;
+  }
+
+  .bo-quantity-input-section {
+    display: inline-block;
+  }
+
+  .bo-remove-section {
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+  }
+
+  .bo-svg-container {
+    padding: 5px 0px;
+  }
+
+  .bo-remove-section svg {
+    height: 25px;
+    width: 25px;
+  }
+
+  .bo-variant-input {
+    width: 100%;
+  }
+
+  .bo-line-item {
+    margin-bottom: 20px;
+  }
+
+  .bo-line-item input {
+    height: 50px !important;
+    width: 100% !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+
+  .bo-img {
+    margin-left: 0px !important;
+    max-height: 50px !important;
+    width: auto !important;
+  }
+
+  .bo-img-container {
+    max-height: 50px !important;
+  }
+
+  .bo-line-item-details {
+    font-size: 1.05rem;
+  }
+
+  .angucomplete-searching {
+    padding: 0px 5px;
+    font-size: 1.05rem;
+  }
+
+  .angucomplete-holder{
+    position: relative;
+  }
+
+  .angucomplete-dropdown {
+    margin-top: 0px;
+    padding: 20px 10px;
+    background-color: #FCFCFC;
+    border: 1px solid #DDDDDD;
+    max-height: 360px;
+    overflow: scroll;
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+  }
+
+  .angucomplete-row {
+    min-height: 50px;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+
+  .angucomplete-image-holder {
+    width: calc(16.66666667% - 20px);
+    float: left;
+    padding: 0px 5px;
+    margin: 0px !important;
+  }
+
+  .angucomplete-image {
+    max-height: 50px !important;
+    width: auto !important;
+  }
+
+  .angucomplete-title {
+    width: calc(83.33333333% - 20px);
+    float: left;    
+    font-size: 1.05rem;
+    padding: 0px 5px;
+  }
+
+  .bo-add-line-item {
+    position: relative;
+    font-size: 1.05rem;
+    margin-top: 10px;
+  }
+
+  .bo-cart-controls {
+    margin-top: 20px;
+    font-size: 1.05rem;
+  }
+
+  .bo-clear-cart,
+  .bo-update-cart {
+    text-align: right;
+    margin-bottom: 10px;
+  }
+
+  .bo-update-cart-btn {
+    float: right;
+    max-width: 80%;
+    position: relative;
+    bottom: 5px;
+  }
+
+  .bo-line-item-already-exists-msg {
+    color: red;
+  }
+
+  .bo-row {
+    padding: 0px 10px;
+    min-height: 50px;
+  }
+
+  .bo-col-1 {
+    width: calc(8.33333333% - 20px);
+    float: left;
+  }
+
+  .bo-col-2 {
+    width: calc(16.6666667% - 20px);
+    float: left;
+  }
+
+  .bo-col-3 {
+    width: calc(25% - 20px);
+    float: left;
+  }
+
+  .bo-col-4 {
+    width: calc(33.33333333% - 20px);
+    float: left;
+  }
+
+  .bo-col-5 {
+    width: calc(41.66666667% - 20px);
+    float: left;
+  }
+
+  .bo-col-6 {
+    width: calc(50% - 20px);
+    float: left;
+  }
+
+  .bo-col-7 {
+    width: calc(58.33333333% - 20px);
+    float: left;
+  }
+
+  .bo-col-8 {
+    width: calc(66.66666667% - 20px);
+    float: left;
+  }
+
+  .bo-col-9 {
+    width: calc(75% - 20px);
+    float: left;
+  }
+
+  .bo-col-10 {
+    width: calc(83.33333333% - 20px);
+    float: left;
+  }
+
+  .bo-col-11 {
+    width: calc(91.66666667% - 20px);
+    float: left;
+  }
+
+  .bo-col-12 {
+    width: calc(100% - 20px);
+    float: left;
+  }
+
+  .bo-col-1, .bo-col-2, .bo-col-3, .bo-col-4, .bo-col-5, .bo-col-6,
+  .bo-col-7, .bo-col-8, .bo-col-9, .bo-col-10, .bo-col-11, .bo-col-12 {
+    margin: 0px 10px;
+  }
+--></style><script>// <![CDATA[
+  (function() {
+
+  function BulkOrderRootCtrl($scope, $http, $timeout) {
+    $scope.lineItems = [];
+    $scope.cart = null;
+    $scope.hasChanges = false;
+
+    $http.get('/cart.js').success(function(response) {
+      $scope.cart = response;
+    });
+
+    $scope.addLineItem = function(opt_initial) {
+      $scope.lineItems.push({
+        searchResult: null,
+        expanded: false,
+        quantity: null
+      });
+      if (!opt_initial) {
+        $scope.hasChanges = true;
+      }
+    };
+    // Initialize the first empty line item in a timeout.
+    // Certain themes look for number inputs at page load time
+    // and replace them with custom widgets.
+    $timeout(function() {
+      $scope.addLineItem(true);
+    });
+
+    $scope.updateCart = function() {
+      $http.post('/cart/update.js', {
+        'updates': _.reduce($scope.lineItems, function(obj, lineItem) {
+          if (lineItem.searchResult && _.isNumber(lineItem.quantity)) {
+            obj[lineItem.searchResult['variant_id']] = lineItem.quantity;
+          }
+          return obj;
+        }, {})
+      })
+      .success(function(response) {
+        $scope.cart = response;
+        $scope.hasChanges = false;
+        $scope.lineItems = _.filter($scope.lineItems, function(lineItem) {
+          return lineItem.quantity > 0;
+        });
+      })
+      .error(function(response) {
+        // Handle out of stock here
+        console.log(response);
+      });
+    };
+
+    $scope.clearCart = function() {
+      $http.post('/cart/clear.js')
+        .success(function(response) {
+          $scope.cart = response;
+          $scope.lineItems = [];
+          $scope.hasChanges = false;
+        });
+    };
+
+    $scope.$on('quantity-changed', function() {
+      $scope.hasChanges = true;
+    });
+
+    $scope.$on('delete-line-item', function(event, lineItem) {
+      var idx = $scope.lineItems.indexOf(lineItem);
+      if (idx != -1) {
+        $scope.lineItems.splice(idx, 1);
+      }
+    });
+
+    $scope.$on('expand-all-variants', function(event, lineItem) {
+      var idx = $scope.lineItems.indexOf(lineItem);
+      if (idx != -1) {
+        var args = [idx, 1];
+        angular.forEach(lineItem.searchResult['product']['variants'], function(variant) {
+          var imageUrl = '';
+          if (variant['featured_image'] && variant['featured_image']['src']) {
+            imageUrl = variant['featured_image']['src']
+          } else if (lineItem.searchResult['product']['featured_image']) {
+            imageUrl = lineItem.searchResult['product']['featured_image'];
+          }
+          args.push({
+            quantity: lineItem.searchResult['variant_id'] == variant['id'] ? lineItem.quantity : null,
+            expanded: true,
+            searchResult: {
+              'product_title': lineItem.searchResult['product_title'],
+              'variant_title': variant['title'],
+              'variant_id': variant['id'],
+              'sku': variant['sku'],
+              'price': variant['price'],
+              'url': variant['url'],
+              'product': lineItem.searchResult['product'],
+              'thumbnail_url': shopifyImageUrl(imageUrl, 'thumb')
+            }
+          });
+        });
+        Array.prototype.splice.apply($scope.lineItems, args);
+      }
+    });
+  }
+
+  function boLineItem() {
+    return {
+      scope: {
+        lineItem: '=',
+        index: '=',
+        allLineItems: '='
+      },
+      templateUrl: 'line-item-template',
+      controller: function($scope) {
+        $scope.showLineItemAlreadyExistsMsg = false;
+
+        $scope.selectResult = function(result) {
+          $scope.showLineItemAlreadyExistsMsg = false;
+          if ($scope.variantLineItemAlreadyExists(result.originalObject['variant_id'])) {
+            $scope.showLineItemAlreadyExistsMsg = true;
+          } else {
+            $scope.lineItem.searchResult = result.originalObject;
+          }
+        };
+
+        $scope.variantLineItemAlreadyExists = function(variantId) {
+          var exists = false;
+          angular.forEach($scope.allLineItems, function(lineItem) {
+            if (lineItem !== $scope.lineItem && lineItem.searchResult['variant_id'] == variantId) {
+              exists = true;
+            }
+          });
+          return exists;
+        };
+
+        $scope.quantityChanged = function() {
+          $scope.$emit('quantity-changed');
+        };
+
+        $scope.deleteLineItem = function() {
+          if (_.isNumber($scope.lineItem.quantity)) {
+            $scope.lineItem.quantity = 0;
+            $scope.quantityChanged();
+          } else {
+            $scope.$emit('delete-line-item', $scope.lineItem);
+          }
+        };
+
+        $scope.numVariants = function() {
+          return $scope.lineItem.searchResult['product']['variants'].length;
+        };
+
+        $scope.expandAllVariants = function() {
+          $scope.$emit('expand-all-variants', $scope.lineItem);
+        };
+      }
+    };
+  }
+
+  function boConfigureAngucomplete($timeout) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        var input = element.find('input');
+        input.attr('tabindex', attrs.boTabindex);
+        $timeout(function() {
+          input.focus();
+        });
+      }
+    };
+  }
+
+  function shopifyImageUrl(url, imageType) {
+    if (url.indexOf('_' + imageType + '.') != -1) {
+      return url;
+    }
+    var dotIdx = url.lastIndexOf('.');
+    return [url.slice(0, dotIdx), '_', imageType, url.slice(dotIdx, url.length)].join('');
+  }
+
+  function shopifyMoneyFormat($shopifyMoneyFormatString, $sce) {
+    return function(cents) {
+      return $sce.trustAsHtml(Shopify.formatMoney(cents, $shopifyMoneyFormatString));
+    };
+  }
+
+  function interpolator($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+  }
+
+  // Polyfill for themes that don't include these:
+  function polyfillShopifyBuiltins() {
+    if (!window['Shopify']) {
+      window['Shopify'] = {};
+    }
+    if (!Shopify.formatMoney) {
+      Shopify.formatMoney = function(cents, format) {
+        if (typeof cents == 'string') cents = cents.replace('.','');
+        var value = '';
+        var patt = /\{\{\s*(\w+)\s*\}\}/;
+        var formatString = (format || this.money_format);
+
+        function addCommas(moneyString) {
+          return moneyString.replace(/(\d+)(\d{3}[\.,]?)/,'$1,$2');
+        }
+
+        switch(formatString.match(patt)[1]) {
+          case 'amount':
+            value = addCommas(floatToString(cents/100.0, 2));
+            break;
+          case 'amount_no_decimals':
+            value = addCommas(floatToString(cents/100.0, 0));
+            break;
+          case 'amount_with_comma_separator':
+            value = floatToString(cents/100.0, 2).replace(/\./, ',');
+            break;
+          case 'amount_no_decimals_with_comma_separator':
+            value = addCommas(floatToString(cents/100.0, 0)).replace(/\./, ',');
+            break;
+        }
+        return formatString.replace(patt, value);
+      };
+      if (!window['floatToString']) {
+        window['floatToString'] = function(numeric, decimals) {
+          var amount = numeric.toFixed(decimals).toString();
+          if(amount.match(/^\.\d+/)) {return "0"+amount; }
+          else { return amount; }
+        }
+      }
+    }
+  }
+
+  polyfillShopifyBuiltins();
+
+  angular.module('bulkOrderAppModule', ['angucomplete-alt'], interpolator)
+    .controller('BulkOrderRootCtrl', BulkOrderRootCtrl)
+    .directive('boLineItem', boLineItem)
+    .directive('boConfigureAngucomplete', boConfigureAngucomplete)
+    .filter('shopifyMoneyFormat', shopifyMoneyFormat)
+    .value('$shopifyMoneyFormatString', BO_MONEY_FORMAT);
+
+  })();
+// ]]></script>
