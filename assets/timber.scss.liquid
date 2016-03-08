@@ -4385,17 +4385,40 @@ img.mfp-img {
 }
 
 #hangerlok-clamps {
+  table {
+    margin-bottom: 10px;
+    white-space: nowrap;
+    width: 100%;
+    td {
+      padding: 5px;
+    }
+
+    td.image, td.cost, td.quantity {
+      width: 1%;
+    }
+    .title {
+      width: 96%;
+    }
+
+    input {
+      width: 50px;
+      margin: 0;
+    }
+
+  }
+
   .section-header {
     .section-header--title {
       text-align: center;
     }
-    .page--hanger-lock-pics {
-      text-align: center;
-      whitespace: nowrap;
-      img {
-        max-height: 150px;
-        max-width: 25%;
-      }
+  }
+
+  .page--hanger-lock-pics {
+    text-align: center;
+    white-space: nowrap;
+    img {
+      max-height: 150px;
+      max-width: 25%;
     }
   }
 }

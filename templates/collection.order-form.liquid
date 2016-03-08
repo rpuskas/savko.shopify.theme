@@ -1,0 +1,112 @@
+{% paginate collection.products by 100 %}
+
+{% if collection.products_count > 0 %}
+<div class="section-header">
+  <h1 class="section-header--title center">{% if template contains 'page' %}{{ page.title }}{% else %}{{ collection.title }}{% endif %}
+  </h1>
+</div> 
+{% else %}
+<h1>{% if template contains 'page' %}{{ page.title }}{% else %}{{ collection.title }}{% endif %}</h1>
+{% endif %}
+
+{% if template contains 'page' and page.content.size > 0 %}
+<div class="rte">
+{{ page.content }}
+</div>  
+{% elsif collection.description.size > 0 %}
+<div class="rte">
+{{ collection.description }}
+</div>
+{% endif %}
+
+{% if collection.products_count > 0 %} 
+<table>
+  <tbody>
+  {% for product in collection.products %}
+    {% if product.available %}
+      {% for variant in product.variants %}
+        {% if variant.available %}
+        <tr>
+          <td class="image">
+            <a href="{{ product.url | collection }}">
+              <img src="{{ product.featured_image.src | product_img_url: 'thumb' }}" alt="{{ product.featured_image.alt | escape }}" />
+            </a>
+          </td>
+          <td class="title">
+            <a href="{{ product.url | collection }}">
+             {{ product.title | split: ',' | join: ',<br>' }}{% unless variant.title contains 'Default' %} - {{ variant.title }}{% endunless %}{% unless variant.sku == '' %} - {{ variant.sku }}{% endunless %}
+            </a>
+          </td>
+          <td class="price">
+             {{ variant.price | money }}
+          </td>
+          <td class="quantity">
+            <input onfocus="this.select()" class="quantity field" data-id="{{ variant.id }}" min="0" type="text" value="0" tabindex="1" />
+          </td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+<div class="action-bar clearfix">
+  <input class="action-button submit button btn right add-to-cart-order-form" type="button" value="Add to the cart" />
+</div> 
+{% else %}
+<p>There are no products in this view.</p>
+{% endif %}
+
+{% endpaginate %}
+
+{% if collection.products_count > 0 %}
+<script>
+Shopify.itemsToAdd = [];
+Shopify.addItemstoTheCart = function() {
+  if (Shopify.itemsToAdd.length) {
+    var item = Shopify.itemsToAdd.pop();
+    $.ajax({
+      url: '/cart/add',
+      dataType: 'json',
+      type: 'post',
+      data: item,
+      success: Shopify.addItemstoTheCart,
+      error: Shopify.addItemstoTheCart
+    });
+  }
+  else {
+    window.location.href = '/cart';
+  }
+};
+jQuery(function($) {
+  $('table .quantity:first').focus();
+  $('[max]').change(function() {
+    var max = parseInt($(this).attr('max'), 10);
+    var value = parseInt($(this).val(), 10) || 0;
+    if (value > max) { 
+      alert('We only have ' + max + ' of this item in stock');
+      $(this).val(max); 
+    }    
+  });
+  $('.add-to-cart-order-form').click(function() {
+    $('.add-to-cart-order-form').addClass('disabled').attr('disabled','disabled');
+    // Resetting.
+    Shopify.itemsToAdd = [];
+    $('.quantity').each(function() {
+      var quantity = parseInt($(this).val(), 10);
+      if (quantity) {
+        Shopify.itemsToAdd.push( { id: $(this).attr('data-id'), quantity: quantity } );
+      }
+    });     
+    if (Shopify.itemsToAdd.length) {
+      Shopify.addItemstoTheCart();
+    }
+    else {
+      alert('All quantities are set to zero.');
+      $('.add-to-cart-order-form').removeAttr('disabled').removeClass('disabled');
+    }
+  });
+});
+</script>
+{% endif %}
+  
