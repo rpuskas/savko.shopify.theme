@@ -1,5 +1,6 @@
 {% paginate collection.products by 100 %}
 
+<div class="collection-order-form">
 {% if collection.products_count > 0 %}
 <div class="section-header">
   <h1 class="section-header--title center">{% if template contains 'page' %}{{ page.title }}{% else %}{{ collection.title }}{% endif %}
@@ -20,44 +21,81 @@
 {% endif %}
 
 {% if collection.products_count > 0 %} 
+<button type="submit" name="add" class="btn add-to-cart-order-form" tabindex="1">
+  <span class="icon icon-cart"></span>
+  <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+</button>
 <table>
   <tbody>
   {% for product in collection.products %}
+    {% include 'bold-set-prices' with product %}
     {% if product.available %}
       {% for variant in product.variants %}
+        {% unless variant.metafields.shappify_qb.qb_hide == "1" %}   
         {% if variant.available %}
         <tr>
           <td class="image">
-            <a href="{{ product.url | collection }}">
-              <img src="{{ product.featured_image.src | product_img_url: 'thumb' }}" alt="{{ product.featured_image.alt | escape }}" />
+            <a href="{{ product.url | within: collection }}">
+              <img src="{{ product.featured_image.src | product_img_url: 'small' }}" />
             </a>
           </td>
           <td class="title">
-            <a href="{{ product.url | collection }}">
-             {{ product.title | split: ',' | join: ',<br>' }}{% unless variant.title contains 'Default' %} - {{ variant.title }}{% endunless %}{% unless variant.sku == '' %} - {{ variant.sku }}{% endunless %}
+            <a href="{{ product.url | within: collection }}">
+              <h2>
+                {{ product.title }}{% unless variant.title contains 'Default' or "1+" %}
+                 - {{ variant.title }}
+
+                {% endunless %}
+              </h2>
             </a>
           </td>
           <td class="price">
-             {{ variant.price | money }}
+              <a href="{{ product.url | within: collection }}">
+                <h2>{{ variant.price | money }}</h2>
+                <span class="discount">  
+                  {% assign hasDiscount = false %}
+                  {% for discountVariant in product.variants %}
+                  {% if discountVariant.metafields.shappify_qb.qb_parent == variant.id %}
+                    {{ discountVariant.metafields.shappify_qb.qb_qty }} at {{ discountVariant.price | money }} ea
+                    {% assign hasDiscount = true %}
+                    {% break %}
+                  {% endif %}
+                  {% endfor %}
+                  {% if hasDiscount != true %}
+                    &nbsp;
+                  {% endif %}
+                </span>
+              </a>
           </td>
           <td class="quantity">
-            <input onfocus="this.select()" class="quantity field" data-id="{{ variant.id }}" min="0" type="text" value="0" tabindex="1" />
+            <input 
+              onfocus="this.select()" 
+              class="quantity field" 
+              data-id="{{ variant.id }}" 
+              min="0"
+              max="999"
+              type="number" 
+              value="0" 
+              tabindex="1" />
           </td>
         </tr>
         {% endif %}
+        {% endunless %}
       {% endfor %}
     {% endif %}
   {% endfor %}
   </tbody>
 </table>
-<div class="action-bar clearfix">
-  <input class="action-button submit button btn right add-to-cart-order-form" type="button" value="Add to the cart" />
-</div> 
+<button type="submit" name="add" class="btn add-to-cart-order-form" tabindex="1" >
+  <span class="icon icon-cart"></span>
+  <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+</button>
 {% else %}
 <p>There are no products in this view.</p>
 {% endif %}
 
 {% endpaginate %}
+</div>
 
 {% if collection.products_count > 0 %}
 <script>
@@ -80,14 +118,6 @@ Shopify.addItemstoTheCart = function() {
 };
 jQuery(function($) {
   $('table .quantity:first').focus();
-  $('[max]').change(function() {
-    var max = parseInt($(this).attr('max'), 10);
-    var value = parseInt($(this).val(), 10) || 0;
-    if (value > max) { 
-      alert('We only have ' + max + ' of this item in stock');
-      $(this).val(max); 
-    }    
-  });
   $('.add-to-cart-order-form').click(function() {
     $('.add-to-cart-order-form').addClass('disabled').attr('disabled','disabled');
     // Resetting.
