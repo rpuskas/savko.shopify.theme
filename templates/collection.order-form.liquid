@@ -35,22 +35,21 @@
         {% if variant.available %}
         <tr>
           <td class="image">
-            <a href="{{ product.url | within: collection }}">
-              <img src="{{ product.featured_image.src | product_img_url: 'small' }}" />
+            <a href="{{ variant.url | within: collection }}">
+              {% assign thumbnailImage = variant.image | default: product.featured_image %}
+              <img src="{{ thumbnailImage.src | product_img_url: 'small' }}" />
             </a>
           </td>
           <td class="title">
-            <a href="{{ product.url | within: collection }}">
+            <a href="{{ variant.url | within: collection }}">
               <h2>
-                {{ product.title }}{% unless variant.title contains 'Default' or "1+" %}
-                 - {{ variant.title }}
-
+                {{ product.title }}{% unless variant.title contains 'Default' or variant.title contains '1+' %} - {{ variant.title }}
                 {% endunless %}
               </h2>
             </a>
           </td>
           <td class="price">
-              <a href="{{ product.url | within: collection }}">
+              <a href="{{ variant.url | within: collection }}">
                 <h2>{{ variant.price | money }}</h2>
                 <span class="discount">  
                   {% assign hasDiscount = false %}
