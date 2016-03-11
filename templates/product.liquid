@@ -40,6 +40,8 @@
 
     <h2 itemprop="name">{{ product.title }}</h2>
 
+    <h3 id="sku" class="product-meta">sku: {{ product.variants.first.sku }}</h3>
+
     {% if settings.product_vendor_enable %}
       <p class="product-meta" itemprop="brand">{{ product.vendor }}</p>
     {% endif %}
@@ -162,6 +164,7 @@
         $quantityElements = $('.quantity-selector, label + .js-qty'),
         $addToCartText = $('#addToCartText'),
         $featuredImage = $('#productPhotoImg');
+        $sku = $('#sku');
 
     if (variant) {
       // Update variant image, if one is set
@@ -223,6 +226,8 @@
       } else {
         $comparePrice.hide();
       }
+
+      $sku.html('SKU: ' + variant.sku);
 
     } else {
       // The variant doesn't exist, disable submit button.
