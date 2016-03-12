@@ -1049,7 +1049,7 @@ hr {
     display: table-cell;
     vertical-align: middle;
     text-align: right;
-    width: 335px;
+    width: 350px;
 
     @include at-query ($max, $medium) {
       margin-bottom: $gutter;
@@ -4382,11 +4382,43 @@ img.mfp-img {
   }
 }
 
+.order-form-collection-icon {
+  height: 19px;
+  margin-top: -2px;
+  width: 19px;
+}
+
+#hangerlok-clamps {
+    
+    .section-header {
+      .section-header--title {
+      text-align: center;
+    }
+
+    .page--hanger-lock-pics {
+      text-align: center;
+      white-space: nowrap;
+      img {
+        max-height: 150px;
+        max-width: 25%;
+      }
+    }
+  }
+}
+
 .collection-order-form {
 
-  .add-to-cart-order-form {
+  .section-header + .submit-order-form {
+    float: none;
+  }
+
+  .section-footer {
+    margin-top: $gutter/2;
+  }
+  
+  .submit-order-form {
     float: right;
-    margin: 10px 5px;
+    margin-bottom: $gutter/1.5;
   }
 
   .discount {
@@ -4397,8 +4429,8 @@ img.mfp-img {
 
   h2 {
     margin: 0;
-
     display: inline-block;
+    
     @include at-query ($max, $medium) {
       font-size: 13px
     }
@@ -4408,24 +4440,27 @@ img.mfp-img {
     margin: 0;
     white-space: nowrap;
     width: 100%;
+
+    tr {
+      border-top: 1px solid #ececec;
+      &:first-child {
+        border-top: 0;
+      }
+    }
     
     td {
-      padding: 5px;
+      padding: 0 0 0 5px;
       border: 0;
-      border-top: 1px solid #ececec;
-      border-bottom: 1px solid #ececec;
       a {
         display: block;
-        width: 100;
       }
     }
 
-    td.image, td.cost, td.quantity {
-      width: 1%;
+    td.price, td.quantity {
+      width: 1px;
     }
 
     .title {
-      width: 96%;
       white-space: normal;
     }
 
@@ -4437,6 +4472,7 @@ img.mfp-img {
     td.image {
       padding: 0;
       line-height: 0;
+      width: 80px;
       img {
         height: 80px;
         width: 80px;
@@ -4449,21 +4485,6 @@ img.mfp-img {
       padding: 7px;
       margin: 0;
       font-size: 14px;
-    }
-  }
-
-  .section-header {
-    .section-header--title {
-      text-align: center;
-    }
-  }
-
-  .page--hanger-lock-pics {
-    text-align: center;
-    white-space: nowrap;
-    img {
-      max-height: 150px;
-      max-width: 25%;
     }
   }
 }

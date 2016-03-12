@@ -1,14 +1,21 @@
-{% comment %}
-  Toggle between collection.liquid and collection.list.liquid with the
-  ?view= parameter.
-{% endcomment %}
-
 <div class="collection-view">
-  <a title="Grid view" class="change-view{% unless template contains 'list' %} collection-view--active{% endunless %}" data-view="grid">
+  <a 
+    title="Grid view" 
+    class="change-view{% unless template contains 'list' or template contains 'order-form' %} collection-view--active{% endunless %}"
+    data-view="grid">
     {{ 'collection-view-grid.svg' | asset_url | img_tag: "Grid View" }}
   </a>
-  <a title="List view" class="change-view{% if template contains 'list' %} collection-view--active{% endif %}" data-view="list">
+  <a 
+    title="List view" 
+    class="change-view{% if template contains 'list' %} collection-view--active{% endif %}" 
+    data-view="list">
     {{ 'collection-view-list.svg' | asset_url | img_tag: "List View" }}
+  </a>
+  <a 
+    title="Order Form" 
+    class="order-form-collection-icon change-view{% if template contains 'order-form' %} collection-view--active{% endif %}" 
+    data-view="order-form">
+    {{ 'si-glyph-trolley-full.svg' | asset_url | img_tag: "Order Form" }}
   </a>
 </div>
 
@@ -27,6 +34,8 @@
       var view = $(this).data('view'),
           url = document.URL,
           hasParams = url.indexOf('?') > -1;
+
+      if(url.includes(view)) return;
 
       if (hasParams) {
         window.location = replaceUrlParam(url, 'view', view);

@@ -39,8 +39,8 @@
   <div class="grid-item large--three-fifths">
 
     <h2 itemprop="name">{{ product.title }}</h2>
-
-    <h3 id="sku" class="product-meta">sku: {{ product.variants.first.sku }}</h3>
+    <h3 id="variantSize">Size:</h3>
+    <h3 id="sku" class="product-meta">SKU: {{ product.variants.first.sku }}</h3>
 
     {% if settings.product_vendor_enable %}
       <p class="product-meta" itemprop="brand">{{ product.vendor }}</p>
@@ -165,6 +165,7 @@
         $addToCartText = $('#addToCartText'),
         $featuredImage = $('#productPhotoImg');
         $sku = $('#sku');
+        $variantSize = $('#variantSize');
 
     if (variant) {
       // Update variant image, if one is set
@@ -228,6 +229,7 @@
       }
 
       $sku.html('SKU: ' + variant.sku);
+      $variantSize.html('Size: ' + variant.option1)
 
     } else {
       // The variant doesn't exist, disable submit button.
@@ -251,7 +253,7 @@
     {% endif %}
 
     // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
-    {% if product.options.size == 1 and product.options.first != 'Title' %}
+    {% if true %}
       $('.selector-wrapper:eq(0)').prepend('<label>{{ product.options.first | escape }}</label>');
     {% endif %}
 
@@ -260,6 +262,7 @@
       $('.selector-wrapper').hide();
     {% else %}
       $('#variantBreak').removeClass('hr--clear');
+
     {% endif %}
   });
 </script>

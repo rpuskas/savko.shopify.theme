@@ -1,7 +1,6 @@
 {% paginate collection.products by 20 %}
 
 {% include 'breadcrumb' %}
-
 {% assign has_sidebar = false %}
 {% if collection.all_tags.size > 0 %}
   {% assign has_sidebar = true %}
