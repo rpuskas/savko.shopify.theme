@@ -229,7 +229,14 @@
       }
 
       $sku.html('SKU: ' + variant.sku);
-      $variantSize.html('Size: ' + variant.option1)
+
+      var variantSize = variant['option' + Shopify.productSizePosition];
+      if(variantSize) {
+        $variantSize.html('Size: ' + variant['option' + Shopify.productSizePosition])
+      }
+      else {
+        $variantSize.hide();
+      }
 
     } else {
       // The variant doesn't exist, disable submit button.
@@ -242,6 +249,10 @@
   };
 
   jQuery(function($) {
+
+    var options = {{ product.options | json }}
+    Shopify.productSizePosition = options.indexOf("Size") + 1;//one based
+
     new Shopify.OptionSelectors('productSelect', {
       product: {{ product | json }},
       onVariantSelected: selectCallback,
@@ -262,7 +273,6 @@
       $('.selector-wrapper').hide();
     {% else %}
       $('#variantBreak').removeClass('hr--clear');
-
     {% endif %}
   });
 </script>

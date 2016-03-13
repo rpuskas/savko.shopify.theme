@@ -22,15 +22,29 @@
       </div>
       <div class="grid-item large--three-fifths medium--two-thirds">
         <p class="h3">{{ product.title }}</p>
+        {% assign index = 0 %}
+        {% for option in product.options %}
+          {% if option == 'Size' %}
+            {% assign index = forloop.index %}
+          {% endif %}
+        {% endfor %}
+        
+        {% assign firstOption = product.options | first %}
+        {% if index != 0 %}
         <p>
-
           {% assign variant_count = product.variants | size %}
-          {% if variant_count > 1 %}
-          Sizes: {{ product.variants | first | map: 'option1' }} - {{ product.variants | last | map: 'option1' }}
+          
+          {% assign optionName = 'option' | append: index %}
+          {% assign smallestSize = product.variants | first | map: optionName %}
+          {% assign largestSize = product.variants | last | map: optionName %}
+
+          {% if smallestSize != largestSize %}
+            Sizes: {{smallestSize}} - {{largestSize}}
           {% else %}
-          Size: {{ product.variants | first | map: 'option1' }}
+            Size: {{smallestSize}}
           {% endif %}
         </p>
+        {% endif %}
       </div>
       <div class="grid-item large--one-fifth medium--two-thirds">
         <div class="product-item--price text-center">
