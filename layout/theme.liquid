@@ -330,30 +330,8 @@
   var moneyFormat = '{{ shop.money_format }}';
   </script>
 
-{% if settings.ajax_cart_method != 'page' %}
-  {{ 'handlebars.min.js' | asset_url | script_tag }}
-  {% include 'ajax-cart-template' %}
-  {{ 'ajaxify.js' | asset_url | script_tag }}
-  <script>
-  jQuery(function($) {
-    ajaxifyShopify.init({
-      method: '{{ settings.ajax_cart_method }}',
-      wrapperClass: 'wrapper',
-      formSelector: '#addToCartForm',
-      addToCartSelector: '#addToCart',
-      cartCountSelector: '.cart-count',
-      toggleCartButton: '.cart-toggle',
-      useCartTemplate: true,
-      btnClass: 'btn',
-      moneyFormat: {{ shop.money_format | json }},
-      disableAjaxCart: false,
-      enableQtySelectors: true
-    });
-  });
-  </script>
-{% endif %}
-
 {% include 'linked-options' %}
 {% include 'search-autocomplete' %}
+{% include 'ajaxify-cart' %}
 </body>
 </html>

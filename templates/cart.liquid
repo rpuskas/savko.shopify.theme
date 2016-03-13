@@ -97,6 +97,7 @@
           <!-- QuantityBreaks -->
           <div id="shappify-qty-cart-msg"></div>
 
+          <a href="{{ cart.items.first.product.collections.first.url }}" class="keep-shopping" title="Continue Shopping">Continue Shopping</a>
           <input type="submit" name="update" class="btn-secondary update-cart" value="{{ 'cart.general.update' | t }}">
 
           <button type="submit" name="checkout" class="btn">
@@ -121,3 +122,9 @@
   <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
 
 {% endif %}
+
+<script>
+function goBack() {
+    window.history.back()
+}
+</script>

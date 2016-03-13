@@ -144,7 +144,7 @@ Shopify.addItemstoTheCart = function() {
 };
 jQuery(function($) {
   $('table .quantity:first').focus();
-  $('.add-to-cart-order-form').click(function() {
+  $('.submit-order-form').click(function() {
     $('.add-to-cart-order-form').addClass('disabled').attr('disabled','disabled');
     // Resetting.
     Shopify.itemsToAdd = [];
