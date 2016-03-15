@@ -142,12 +142,12 @@ Shopify.addItemstoTheCart = function() {
     window.location.href = '/cart';
   }
 };
-jQuery(function($) {
-  $('table .quantity:first').focus();
-  $('.submit-order-form').click(function() {
-    $('.add-to-cart-order-form').addClass('disabled').attr('disabled','disabled');
-    // Resetting.
-    Shopify.itemsToAdd = [];
+
+Shopify.addItemsEvent = function() {
+  
+  $('.add-to-cart-order-form').addClass('disabled').attr('disabled','disabled');
+
+  Shopify.itemsToAdd = [];
     $('.quantity').each(function() {
       var quantity = parseInt($(this).val(), 10);
       if (quantity) {
@@ -161,6 +161,21 @@ jQuery(function($) {
       alert('All quantities are set to zero.');
       $('.add-to-cart-order-form').removeAttr('disabled').removeClass('disabled');
     }
+}
+
+jQuery(function($) {
+  
+  $("input").keypress(function(event) {
+    if (event.which == 13) {
+        event.preventDefault();
+        Shopify.addItemsEvent();
+    }
+  });
+
+  $('table .quantity:first').focus();
+  
+  $('.submit-order-form').click(function() {
+    Shopify.addItemsEvent();
   });
 });
 </script>
