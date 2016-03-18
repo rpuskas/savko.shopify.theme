@@ -1,0 +1,139 @@
+{% unless current_collection %}
+  {% assign current_collection = collection %}
+{% endunless %}
+
+{% assign on_sale = false %}
+{% if bold_compare_at_price > bold_price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if product.available  %}
+  {% assign sold_out = false %}
+{% endif %}
+
+{% assign image_size = settings.collection_prod_image_sizes %}
+
+<div class="grid-item{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}">
+  <a href="{{ product.url | within: current_collection }}" class="product-grid-item product-list-item">
+    <div class="grid">
+      <div class="grid-item large--one-fifth medium--one-third">
+        <img src="{{ product.featured_image.src | img_url: image_size }}" alt="{{ product.featured_image.alt | escape }}">
+      </div>
+      <div class="grid-item large--three-fifths medium--two-thirds">
+        <p class="h3">{{ product.title }}</p>
+        {% assign index = 0 %}
+        {% for option in product.options %}
+          {% if option == 'Size' %}
+            {% assign index = forloop.index %}
+          {% endif %}
+        {% endfor %}
+        
+        {% assign firstOption = product.options | first %}
+        {% if index != 0 %}
+        <p>
+          {% assign variant_count = product.variants | size %}
+          
+          {% assign optionName = 'option' | append: index %}
+          {% assign smallestSize = product.variants | first | map: optionName %}
+          {% assign largestSize = product.variants | last | map: optionName %}
+
+          {% if smallestSize != largestSize %}
+            Sizes: {{smallestSize}} - {{largestSize}}
+          {% else %}
+            Size: {{smallestSize}}
+          {% endif %}
+        </p>
+
+        <a href="#" class="show-variants" data-id="{{ product.id }}">Show Variants</a>
+        {% endif %}
+      </div>
+      <div class="grid-item large--one-fifth medium--two-thirds">
+        <div class="product-item--price text-center">
+          <p class="medium-down--left">
+            {% if bold_price_max != bold_price_min %}
+            {% include 'price' with bold_price_min %} - {% include 'price' with bold_price_max %}
+            {% else %}
+            {% include 'price' with bold_price %}
+            {% endif %}
+            {% if on_sale and settings.product_show_compare_at_price %}
+              <s>{% include 'price' with bold_compare_at_price %}</s>
+            {% endif %}
+          </p>
+
+          {% if on_sale and settings.product_show_saved_amount %}
+            <span class="sale-tag medium-down--right{% if settings.product_reviews_enable %} has-reviews{% endif %}">
+              {% assign compare_price = bold_compare_at_price %}
+              {% assign product_price = bold_price %}
+              {% include 'price-sale' %}
+            </span>
+          {% endif %}
+
+          {% if settings.product_reviews_enable %}
+            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="grid-item large--four-fifths variants" data-id="{{product.id}}">
+        <table>
+        {% for variant in product.variants %}
+          {% unless variant.metafields.shappify_qb.qb_hide == "1" %}   
+            {% if variant.available %}
+            <tr>
+              <td class="image">
+                <a href="{{ variant.url | within: collection }}">
+                  {% assign thumbnailImage = variant.image | default: product.featured_image %}
+                  <img src="{{ thumbnailImage.src | product_img_url: 'thumb' }}" />
+                </a>
+              </td>
+              <td class="title">
+                <a href="{{ variant.url | within: collection }}">
+                  <h2>
+                    {% unless variant.title contains 'Default' or variant.title contains '1+' %}
+                      {{ variant.title }}
+                    {% endunless %}
+                  </h2>
+                  <span>&nbsp;</span>
+                </a>
+              </td>
+              <td class="price">
+                  <a href="{{ variant.url | within: collection }}">
+                    <h2>{{ variant.price | money }}</h2>
+                    <span class="discount">  
+                      {% assign hasDiscount = false %}
+                      {% for discountVariant in product.variants %}
+                      {% if discountVariant.metafields.shappify_qb.qb_parent == variant.id %}
+                        {{ discountVariant.metafields.shappify_qb.qb_qty }} at {{ discountVariant.price | money }} ea
+                        {% assign hasDiscount = true %}
+                        {% break %}
+                      {% endif %}
+                      {% endfor %}
+                      {% if hasDiscount != true %}
+                        &nbsp;
+                      {% endif %}
+                    </span>
+                  </a>
+              </td>
+              <td class="quantity">
+                <input 
+                  onfocus="this.select()" 
+                  class="quantity field" 
+                  data-id="{{ variant.id }}" 
+                  min="0"
+                  max="999"
+                  type="number" 
+                  value="0" 
+                  tabindex="1" /> 
+              </td>
+              <td class="addToCart">
+                <button class="btn"> Add To Cart </button>
+              </td>
+            </tr>
+            {% endif %}
+          {% endunless %}
+        {% endfor %}
+        </table>
+      </div>
+    </div>
+  </a>
+</div>

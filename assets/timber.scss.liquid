@@ -2740,11 +2740,69 @@ $shareBorderColor: #ececec;
 
 }
 .product-list-item {
+  
   .product-item--price small {
     font-size: inherit;
   }
 }
 
+.collection-list {
+  .variants {
+    display: none;
+    margin-top: $gutter/3;
+    
+    table {
+      margin: 0;
+      white-space: nowrap;
+      width: 100%;
+
+      button {
+        padding: 5px 10px;
+      }
+
+      tr {
+        border-top: 1px solid #ececec;
+        &:first-child {
+          border-top: 0;
+        }
+      }
+      
+      td {
+        padding: 0 0 0 5px;
+        border: 0;
+        a {
+          display: block;
+        }
+      }
+
+      td.quantity,td.addToCart {
+        width: 1px;
+      }
+
+      .price, .title {
+        padding: 22px 5px 5px 5px;
+      }
+
+      td.image {
+        padding: 0;
+        line-height: 0;
+        width: 80px;
+        img {
+          height: 80px;
+          width: 80px;
+          padding: 5px;
+        }
+      }
+
+      input {
+        width: 55px;
+        padding: 6px;
+        margin: 0;
+        font-size: 14px;
+      }
+    }    
+  }
+}
 
 @include at-query ($max, $medium) {
   .product-list-item .spr-badge {
