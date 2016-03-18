@@ -2747,6 +2747,18 @@ $shareBorderColor: #ececec;
 }
 
 .collection-list {
+
+  .show-variants {
+    .icon-arrow-down {
+      top: 0;
+      left: 5px;
+    }
+  }
+
+  .product-grid-item {
+    margin-bottom: $gutter/2;
+  }
+
   .variants {
     display: none;
     margin-top: $gutter/3;
@@ -2758,6 +2770,7 @@ $shareBorderColor: #ececec;
 
       button {
         padding: 5px 10px;
+        width: 135.22px;
       }
 
       tr {
@@ -2775,12 +2788,19 @@ $shareBorderColor: #ececec;
         }
       }
 
-      td.quantity,td.addToCart {
+      td.quantity,td.add-to-cart {
         width: 1px;
       }
 
       .price, .title {
-        padding: 22px 5px 5px 5px;
+        position: relative;
+        padding: 5px;
+        h2 {
+          margin: 0;
+        }
+        span {
+          position: absolute;
+        } 
       }
 
       td.image {
