@@ -24,28 +24,30 @@
         </div>
       </header>
       <hr{% if has_sidebar %} class="hr--offset-left"{% endif %}>
-      <div class="section-header">
+      <div class="section-header menu">
         <div class="section-header--right">
           {% include 'collection-sorting' %}
           {% include 'collection-views' %}
-          {% include 'toggle-filters' %}
+          <button type="submit" name="add" class="btn submit-order-form" tabindex="1">
+            <span class="icon icon-cart"></span>
+            <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+          </button>
         </div>
       </div>
     {% else %}
-    <header class="section-header">
+    <header class="section-header menu">
       <h1 class="section-header--title section-header--left">{{ collection.title }}</h1>
       <div class="section-header--right">
         {% include 'collection-sorting' %}
         {% include 'collection-views' %}
-        {% include 'toggle-filters' %}
+        <button type="submit" name="add" class="btn submit-order-form" tabindex="1">
+          <span class="icon icon-cart"></span>
+          <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+        </button>
       </div>
     </header>
     {% endif %}
 
-    <button type="submit" name="add" class="btn submit-order-form" tabindex="1">
-      <span class="icon icon-cart"></span>
-      <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
-    </button>
     {% if collection.products_count > 0 %} 
     <table>
       <tbody>

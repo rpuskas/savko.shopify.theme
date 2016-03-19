@@ -993,7 +993,7 @@ hr {
   clear: both;
   border-top: solid $colorBorder;
   border-width: 1px 0 0;
-  margin: $gutter 0;
+  margin: $gutter/2 0;
   height: 0;
 
   &.hr--small {
@@ -1012,10 +1012,6 @@ hr {
     &.hr--offset-left {
       margin-left: -$gutter;
     }
-  }
-
-  @include at-query ($min, $small) {
-    margin: $gutter/2 0;
   }
 }
 
@@ -1049,7 +1045,7 @@ hr {
     display: table-cell;
     vertical-align: middle;
     text-align: right;
-    width: 350px;
+    width: 500px;
 
     @include at-query ($max, $medium) {
       margin-bottom: $gutter;
@@ -4496,6 +4492,15 @@ img.mfp-img {
 
 .collection-order-form {
 
+  .section-header.menu {
+    margin-bottom: $gutter/2;
+  }
+
+  .section-header .submit-order-form {
+    margin-left: $gutter/2;
+    margin-bottom: 0;
+  }
+
   .section-footer {
     margin-top: $gutter/2;
   }
@@ -4521,9 +4526,6 @@ img.mfp-img {
 
     tr {
       border-top: 1px solid #ececec;
-      &:first-child {
-        border-top: 0;
-      }
     }
     
     td {
