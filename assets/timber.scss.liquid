@@ -2748,6 +2748,9 @@ $shareBorderColor: #ececec;
 
 .collection-list {
 
+  a {
+    color: #00185a;
+  }
   .show-variants {
     .icon-arrow-down {
       top: 0;
@@ -2770,18 +2773,17 @@ $shareBorderColor: #ececec;
 
       button {
         padding: 5px 10px;
-        width: 135.22px;
+        width: 101.1px;
       }
 
       tr {
         border-top: 1px solid #ececec;
-        &:first-child {
-          border-top: 0;
-        }
+        border-bottom: 1px solid #ececec;
+
       }
       
       td {
-        padding: 0 0 0 5px;
+        padding: 0 0 0 $gutter/3;
         border: 0;
         a {
           display: block;
@@ -2794,23 +2796,24 @@ $shareBorderColor: #ececec;
 
       .price, .title {
         position: relative;
-        padding: 5px;
         h2 {
           margin: 0;
         }
-        span {
+
+        .discount {
           position: absolute;
+          bottom: 4px;
         } 
       }
 
       td.image {
         padding: 0;
         line-height: 0;
-        width: 80px;
+        width: 50px;
         img {
-          height: 80px;
-          width: 80px;
-          padding: 5px;
+          height: 50px;
+          width: 50px;
+          margin: 5px 0;
         }
       }
 
@@ -4485,11 +4488,13 @@ img.mfp-img {
   }
 }
 
-.collection-order-form {
+.discount {
+  font-size: 11px;
+  display: block;
+  color: blue;
+}
 
-  .section-header + .submit-order-form {
-    float: none;
-  }
+.collection-order-form {
 
   .section-footer {
     margin-top: $gutter/2;
@@ -4498,12 +4503,6 @@ img.mfp-img {
   .submit-order-form {
     float: right;
     margin-bottom: $gutter/1.5;
-  }
-
-  .discount {
-    font-size: 11px;
-    display: block;
-    color: blue;
   }
 
   h2 {

@@ -17,11 +17,11 @@
 <div class="grid-item{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}">
   <a href="{{ product.url | within: current_collection }}" class="product-grid-item product-list-item">
     <div class="grid">
-      <div class="grid-item large--one-fifth medium--one-third">
-        <img src="{{ product.featured_image.src | img_url: image_size }}" alt="{{ product.featured_image.alt | escape }}">
+      <div class="grid-item large--one-sixth medium--one-third">
+        <img src="{{ product.featured_image.src | img_url: small }}" alt="{{ product.featured_image.alt | escape }}">
       </div>
-      <div class="grid-item large--three-fifths medium--two-thirds">
-        <p class="h3">{{ product.title }}</p>
+      <div class="grid-item large--three-sixths medium--two-thirds">
+        <h2>{{ product.title }}</h2>
         {% assign index = 0 %}
         {% for option in product.options %}
           {% if option == 'Size' %}
@@ -30,8 +30,8 @@
         {% endfor %}
         
         {% assign firstOption = product.options | first %}
-        {% if index != 0 %}
         <a href="#" class="show-variants" data-id="{{ product.id }}">
+        {% if index != 0 %}
           {% assign variant_count = product.variants | size %}
           
           {% assign optionName = 'option' | append: index %}
@@ -39,26 +39,28 @@
           {% assign largestSize = product.variants | last | map: optionName %}
 
           {% if smallestSize != largestSize %}
-            Quick Add: Sizes {{smallestSize}} - {{largestSize}}
+            Sizes: {{smallestSize}} - {{largestSize}}
           {% else %}
-            Quick Add: Size {{smallestSize}}
+            Size: {{smallestSize}}
           {% endif %}
+        {% else %}
+          Quick Add
+        {% endif %}
           <span class="icon icon-arrow-down" aria-hidden="true">
         </a>
-        {% endif %}
       </div>
-      <div class="grid-item large--one-fifth medium--two-thirds">
-        <div class="product-item--price text-center">
-          <p class="medium-down--left">
+      <div class="grid-item large--two-sixths medium--two-thirds">
+        <div class="product-item--price text-right">
+          <h2 class="medium-down--left">
             {% if bold_price_max != bold_price_min %}
-            {% include 'price' with bold_price_min %} - {% include 'price' with bold_price_max %}
+            {% include 'regular-price' with bold_price_min %} - {% include 'regular-price' with bold_price_max %}
             {% else %}
-            {% include 'price' with bold_price %}
+            {% include 'regular-price' with bold_price %}
             {% endif %}
             {% if on_sale and settings.product_show_compare_at_price %}
-              <s>{% include 'price' with bold_compare_at_price %}</s>
+              <s>{% include 'regular-price' with bold_compare_at_price %}</s>
             {% endif %}
-          </p>
+          </h2>
 
           {% if on_sale and settings.product_show_saved_amount %}
             <span class="sale-tag medium-down--right{% if settings.product_reviews_enable %} has-reviews{% endif %}">
@@ -73,7 +75,7 @@
           {% endif %}
         </div>
       </div>
-      <div class="grid-item large--four-fifths variants" data-id="{{product.id}}">
+      <div class="grid-item large--five-sixths variants" data-id="{{product.id}}">
         <table>
         {% for variant in product.variants %}
           {% unless variant.metafields.shappify_qb.qb_hide == "1" %}   
@@ -88,18 +90,18 @@
               <td class="title">
                 <a href="{{ variant.url | within: collection }}">
                   <h2>
-                    {% unless variant.title contains 'Default' or variant.title contains '1+' %}
+                    {% if variant.title contains 'Default' or variant.title contains '1+' %}
+                      &nbsp;
+                    {% else %}
                       {{ variant.title }}
-                    {% endunless %}
+                    {% endif %}
                   </h2>
-                  <span>&nbsp;</span>
                 </a>
               </td>
               <td class="price">
                   <a href="{{ variant.url | within: collection }}">
                     <h2>{{ variant.price | money }}</h2>
                     <span class="discount">  
-                      123 hahaha!
                       {% assign hasDiscount = false %}
                       {% for discountVariant in product.variants %}
                       {% if discountVariant.metafields.shappify_qb.qb_parent == variant.id %}
@@ -127,7 +129,6 @@
               </td>
               <td class="add-to-cart">
                 <button class="btn" data-id="{{ variant.id }}">
-                  <span class="icon icon-cart"></span>
                   <span id="addToCartText">Add to Cart</span>
                 </button>
               </td>
