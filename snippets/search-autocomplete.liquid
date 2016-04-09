@@ -14,7 +14,7 @@ $(function() {
     // Grabbing text input.
     var input = $(this).find('input[name="q"]');
     // Adding a list for showing search results.
-    var offSet = input.position().top + input.innerHeight();
+    var offSet = input.position().top + input.innerHeight() + 2;
     $('<ul class="search-results"></ul>').css( { 'position': 'absolute', 'left': '0px', 'top': offSet } ).appendTo($(this)).hide();    
     // Listening to keyup and change on the text field within these search forms.
     input.attr('autocomplete', 'off').bind('keyup change', function() {

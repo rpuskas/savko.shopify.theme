@@ -35,7 +35,7 @@
       <div class="grid-item large--two-sixths medium--two-thirds small--two-thirds">
         <div class="product-item--price text-right">
 
-          <h2 class="medium-down--left">
+          <h3 class="medium-down--left">
             {% if bold_price_max != bold_price_min %}
             {% include 'regular-price' with bold_price_min %} - {% include 'regular-price' with bold_price_max %}
             {% else %}
@@ -44,7 +44,7 @@
             {% if on_sale and settings.product_show_compare_at_price %}
               <s>{% include 'regular-price' with bold_compare_at_price %}</s>
             {% endif %}
-          </h2>
+          </h3>
 
           {% if on_sale and settings.product_show_saved_amount %}
           <span class="sale-tag medium-down--right{% if settings.product_reviews_enable %} has-reviews{% endif %}">
@@ -61,13 +61,20 @@
       </div>
       <div class="grid-item large--three-sixths medium--two-thirds small--two-thirds">
         {% assign firstOption = product.options | first %}
-        <a href="#" class="show-variants" data-id="{{ product.id }}">
+
+        <a href="#" class="show-variants h3" data-id="{{ product.id }}">
+          <span class="icon icon-arrow-down" aria-hidden="true"></span>  
         {% if index != 0 %}
           {% assign variant_count = product.variants | size %}
           
           {% assign optionName = 'option' | append: index %}
           {% assign smallestSize = product.variants | first | map: optionName %}
-          {% assign largestSize = product.variants | last | map: optionName %}
+          {% assign largestSize = smallestSize %}
+          {% for variant in product.variants %}
+            {% if variant.metafields.shappify_qb.qb_hide != "1" %}
+              {% assign largestSize = variant | map: optionName %}
+            {% endif %}
+          {% endfor %}
 
           {% if smallestSize != largestSize %}
             Sizes: {{smallestSize}} - {{largestSize}}
@@ -77,7 +84,6 @@
         {% else %}
           Quick Add
         {% endif %}
-          <span class="icon icon-arrow-down" aria-hidden="true">
         </a>
       </div>
       <div class="grid-item large--five-sixths variants" data-id="{{product.id}}">

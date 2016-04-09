@@ -101,7 +101,11 @@
         </select>
 
         {% if settings.product_quantity_enable %}
-          <label for="quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
+          {% if product.type == "Pipe & Tubing" %}
+            <label for="quantity" class="quantity-selector">Quantity<span>(1 unit = 5 feet)</span></label>
+          {% else %}
+            <label for="quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
+          {% endif %}
           <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">
         {% endif %}
 

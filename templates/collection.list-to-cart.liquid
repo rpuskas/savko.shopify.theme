@@ -2,7 +2,7 @@
 
 {% include 'breadcrumb' %}
 {% assign has_sidebar = false %}
-{% if collection.all_tags.size > 0 %}
+{% if collection.all_tags.size > 1 %}
   {% assign has_sidebar = true %}
 {% endif %}
 
@@ -197,6 +197,7 @@ jQuery(function($) {
 
     var variant = $('.variants').filter('[data-id=' + productId + ']');
     variant.toggle();
+    $this.find('.icon-arrow-down').toggleClass("expanded");
   });
 
   $('table .quantity:first').focus();

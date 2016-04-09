@@ -105,8 +105,8 @@
     },
     "sidebar": {
       "filters": "Filters",
-      "shop_by": "Shop By",
-      "all": "All",
+      "shop_by": "Filter By",
+      "all": "Reset Filters",
       "all_collection": "All {{ collection_title }}",
       "no_tags": "Add tags to your products for this list to build itself."
     },
